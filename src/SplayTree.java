@@ -20,6 +20,8 @@
  */
 public class SplayTree<AnyType extends Comparable<? super AnyType>>
 {
+    private int rotationCount;
+
     /**
      * Construct the tree.
      */
@@ -200,6 +202,7 @@ public class SplayTree<AnyType extends Comparable<? super AnyType>>
             if( compareResult < 0 )
             {
                 if( x.compareTo( t.left.element ) < 0 )
+                    rotationCount++;
                     t = rotateWithLeftChild( t );
                 if( t.left == nullNode )
                     break;
@@ -211,6 +214,7 @@ public class SplayTree<AnyType extends Comparable<? super AnyType>>
             else if( compareResult > 0 )
             {
                 if( x.compareTo( t.right.element ) > 0 )
+                    rotationCount++;
                     t = rotateWithRightChild( t );
                 if( t.right == nullNode )
                     break;
@@ -252,6 +256,10 @@ public class SplayTree<AnyType extends Comparable<? super AnyType>>
         k1.right = k2.left;
         k2.left = k1;
         return k2;
+    }
+
+    public int getRotationCount() {
+        return rotationCount;
     }
 
     // Basic node stored in unbalanced binary search trees
@@ -306,5 +314,6 @@ public class SplayTree<AnyType extends Comparable<? super AnyType>>
         for( int i = 1; i < NUMS; i += 2 )
             if( t.contains( i ) )
                 System.out.println( "Error: Found deleted item " + i );
+
     }
 }
