@@ -23,7 +23,7 @@ import java.util.Random;
  */
 public class Treap<AnyType extends Comparable<? super AnyType>>
 {
-    private static Random randomObj = new Random();
+    private int rotationCount;
     /**
      * Construct the treap.
      */
@@ -223,6 +223,7 @@ public class Treap<AnyType extends Comparable<? super AnyType>>
         TreapNode<AnyType> k1 = k2.left;
         k2.left = k1.right;
         k1.right = k2;
+        rotationCount++;
         return k1;
     }
 
@@ -234,7 +235,12 @@ public class Treap<AnyType extends Comparable<? super AnyType>>
         TreapNode<AnyType> k2 = k1.right;
         k1.right = k2.left;
         k2.left = k1;
+        rotationCount++;
         return k2;
+    }
+
+    public int getRotationCount() {
+        return rotationCount;
     }
 
     private static class TreapNode<AnyType>
@@ -295,5 +301,6 @@ public class Treap<AnyType extends Comparable<? super AnyType>>
         for( int i = 1; i < NUMS; i+=2 )
             if( t.contains( i ) )
                 System.out.println( "Error: Found deleted item " + i );
+
     }
 }
