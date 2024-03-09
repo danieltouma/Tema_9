@@ -1,25 +1,25 @@
 import java.util.Arrays;
 import java.util.Random;
 
+
 public class DataStructureComparison {
     private static int [] randomDataset;
     private static int [] sortedDataset;
     private static int [] reversedSortedDataset;
     public static void main(String[] args) {
         final int N = 100;
-        randomDataset = generateRandomDataset(N, 1000);
+        randomDataset = generateRandomDataset(N, 10000);
         sortedDataset = generateSortedDataset();
         reversedSortedDataset = generateReversedSortedDataset();
 
-        testInsertion("Random Dataset", new SplayTree<>(), new RedBlackTree<>(), new Treap<>(), randomDataset, N);
-        testInsertion("Sorted Dataset", new SplayTree<>(), new RedBlackTree<>(), new Treap<>(), sortedDataset, N);
-        testInsertion("Reversed Sorted Dataset", new SplayTree<>(), new RedBlackTree<>(), new Treap<>(), reversedSortedDataset, N);
-
+        testPerformance("Random Dataset", new SplayTree<>(), new RedBlackTree<>(), new Treap<>(), randomDataset, N);
+        testPerformance("Sorted Dataset", new SplayTree<>(), new RedBlackTree<>(), new Treap<>(), sortedDataset, N);
+        testPerformance("Reversed Sorted Dataset", new SplayTree<>(), new RedBlackTree<>(), new Treap<>(), reversedSortedDataset, N);
     }
 
-    private static void testInsertion(String datasetType, SplayTree<Integer> splayTree,
-                                      RedBlackTree<Integer> redBlackTree, Treap<Integer> treap,
-                                      int[] dataset, final int N) {
+    private static void testPerformance(String datasetType, SplayTree<Integer> splayTree,
+                                        RedBlackTree<Integer> redBlackTree, Treap<Integer> treap,
+                                        int[] dataset, final int N) {
         System.out.println("Testing insertion with " + datasetType  + " [size: " + N + "]");
         for (int value : dataset) {
             splayTree.insert(value);
@@ -31,11 +31,37 @@ public class DataStructureComparison {
         int redBlackRotations = redBlackTree.getRotationCount();
         int treapRotations = treap.getRotationCount();
 
-        System.out.println("Number of rotations:" +
+        System.out.println("Number of rotations for insert:" +
                 "\nTDST:  " + splayRotations +
                 "\nRBT:   " + redBlackRotations +
-                "\nTREAP: " + treapRotations);
+                "\nTREAP: " + treapRotations + "\n");
+        testContains(datasetType, splayTree, redBlackTree, treap, dataset, N);
+        System.out.println("*************************************************************************");
+    }
 
+    private static void testContains(String datasetType, SplayTree<Integer> splayTree,
+                                     RedBlackTree<Integer> redBlackTree, Treap<Integer> treap,
+                                     int[] dataset, final int N) {
+        //to clear comparison count.
+        splayTree.getComparisonCount();
+        redBlackTree.getComparisonCount();
+        treap.getComparisonCount();
+
+        int searchValue = dataset[9];
+        System.out.println("Testing contains with " + datasetType  + " [size: " + N + "]" + " [value: " + searchValue + "]");
+
+        for (int i = 0; i < 2; i++) {
+            splayTree.contains(searchValue);
+            redBlackTree.contains(searchValue);
+            treap.contains(searchValue);
+
+            System.out.println("SplayTree comparisons:" + splayTree.getComparisonCount());
+            System.out.println("redBlackTree comparisons:" + redBlackTree.getComparisonCount());
+            System.out.println("treap comparisons:" + treap.getComparisonCount() + "\n");
+            if (i == 0) {
+                System.out.println("Searching for [value: " + searchValue + "] again");
+            }
+        }
     }
 
     private static int[] generateRandomDataset(int size, int bound) {

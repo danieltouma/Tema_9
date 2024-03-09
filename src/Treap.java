@@ -24,6 +24,8 @@ import java.util.Random;
 public class Treap<AnyType extends Comparable<? super AnyType>>
 {
     private int rotationCount;
+
+    private int comparisonCount;
     /**
      * Construct the treap.
      */
@@ -97,17 +99,25 @@ public class Treap<AnyType extends Comparable<? super AnyType>>
         TreapNode<AnyType> current = root;
         nullNode.element = x;
 
-        for( ; ; )
-        {
-            int compareResult = x.compareTo( current.element );
+        for( ; ; ) {
+            int compareResult = x.compareTo(current.element);
 
-            if( compareResult < 0 )
+            if (compareResult < 0) {
+                comparisonCount++;
                 current = current.left;
-            else if( compareResult > 0 )
+            } else if (compareResult > 0) {
+                comparisonCount++;
                 current = current.right;
-            else
+            } else {
                 return current != nullNode;
+            }
         }
+    }
+
+    public int getComparisonCount() {
+        int temp = comparisonCount;
+        comparisonCount = 0;
+        return temp;
     }
 
     /**
@@ -240,7 +250,9 @@ public class Treap<AnyType extends Comparable<? super AnyType>>
     }
 
     public int getRotationCount() {
-        return rotationCount;
+        int temp = rotationCount;
+        rotationCount = 0;
+        return temp;
     }
 
     private static class TreapNode<AnyType>

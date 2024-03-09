@@ -21,6 +21,7 @@
 public class SplayTree<AnyType extends Comparable<? super AnyType>>
 {
     private int rotationCount;
+    private int comparisonCount;
 
     /**
      * Construct the tree.
@@ -150,6 +151,8 @@ public class SplayTree<AnyType extends Comparable<? super AnyType>>
      * @param x the item to search for.
      * @return true if x is found; otherwise false.
      */
+
+
     public boolean contains( AnyType x )
     {
         if( isEmpty( ) )
@@ -158,6 +161,12 @@ public class SplayTree<AnyType extends Comparable<? super AnyType>>
         root = splay( x, root );
 
         return root.element.compareTo( x ) == 0;
+    }
+
+    public int getComparisonCount() {
+        int temp = comparisonCount;
+        comparisonCount = 0;
+        return temp;
     }
 
     /**
@@ -201,9 +210,11 @@ public class SplayTree<AnyType extends Comparable<? super AnyType>>
 
             if( compareResult < 0 )
             {
-                if( x.compareTo( t.left.element ) < 0 )
+                comparisonCount++;
+                if( x.compareTo( t.left.element ) < 0 ) {
                     rotationCount++;
-                    t = rotateWithLeftChild( t );
+                    t = rotateWithLeftChild(t);
+                }
                 if( t.left == nullNode )
                     break;
                 // Link Right
@@ -213,9 +224,11 @@ public class SplayTree<AnyType extends Comparable<? super AnyType>>
             }
             else if( compareResult > 0 )
             {
-                if( x.compareTo( t.right.element ) > 0 )
+                comparisonCount++;
+                if( x.compareTo( t.right.element ) > 0 ) {
                     rotationCount++;
-                    t = rotateWithRightChild( t );
+                    t = rotateWithRightChild(t);
+                }
                 if( t.right == nullNode )
                     break;
                 // Link Left
@@ -259,7 +272,9 @@ public class SplayTree<AnyType extends Comparable<? super AnyType>>
     }
 
     public int getRotationCount() {
-        return rotationCount;
+        int temp = rotationCount;
+        rotationCount = 0;
+        return temp;
     }
 
     // Basic node stored in unbalanced binary search trees
