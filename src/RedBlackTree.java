@@ -22,6 +22,8 @@
 public class RedBlackTree<AnyType extends Comparable<? super AnyType>>
 {
     private int rotationCount;
+
+    private int comparisonCount;
     /**
      * Construct the tree.
      */
@@ -136,15 +138,24 @@ public class RedBlackTree<AnyType extends Comparable<? super AnyType>>
 
         for( ; ; )
         {
-            if( x.compareTo( current.element ) < 0 )
+            if( x.compareTo( current.element ) < 0 ) {
+                comparisonCount++;
                 current = current.left;
-            else if( x.compareTo( current.element ) > 0 )
+            } else if( x.compareTo( current.element ) > 0 ) {
+                comparisonCount++;
                 current = current.right;
-            else if( current != nullNode )
+            } else if( current != nullNode ) {
                 return true;
-            else
+            } else {
                 return false;
+            }
         }
+    }
+
+    public int getComparisonCount() {
+        int temp = comparisonCount;
+        comparisonCount = 0;
+        return temp;
     }
 
     /**
@@ -258,7 +269,9 @@ public class RedBlackTree<AnyType extends Comparable<? super AnyType>>
     }
 
     public int getRotationCount() {
-        return rotationCount;
+        int temp = rotationCount;
+        rotationCount = 0;
+        return temp;
     }
 
     private static class RedBlackNode<AnyType>
