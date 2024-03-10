@@ -20,7 +20,14 @@ public class DataStructureComparison {
     private static void testPerformance(String datasetType, SplayTree<Integer> splayTree,
                                         RedBlackTree<Integer> redBlackTree, Treap<Integer> treap,
                                         int[] dataset, final int N) {
-        System.out.println("Testing insertion with " + datasetType  + " [size: " + N + "]");
+        int searchValue = dataset[50];
+        testInsertion(datasetType, splayTree, redBlackTree, treap, dataset, N);
+        testContains(datasetType, splayTree, redBlackTree, treap, searchValue, N);
+        System.out.println("*************************************************************************");
+    }
+
+    private static void testInsertion(String datasetType, SplayTree<Integer> splayTree, RedBlackTree<Integer> redBlackTree, Treap<Integer> treap, int[] dataset, int N) {
+        System.out.println("Inserting " + datasetType + " [size: " + N + "]");
         for (int value : dataset) {
             splayTree.insert(value);
             redBlackTree.insert(value);
@@ -35,20 +42,16 @@ public class DataStructureComparison {
                 "\nTDST:  " + splayRotations +
                 "\nRBT:   " + redBlackRotations +
                 "\nTREAP: " + treapRotations + "\n");
-        testContains(datasetType, splayTree, redBlackTree, treap, dataset, N);
-        System.out.println("*************************************************************************");
     }
 
     private static void testContains(String datasetType, SplayTree<Integer> splayTree,
                                      RedBlackTree<Integer> redBlackTree, Treap<Integer> treap,
-                                     int[] dataset, final int N) {
+                                     int searchValue, final int N) {
         //to clear comparison count.
         splayTree.getComparisonCount();
         redBlackTree.getComparisonCount();
         treap.getComparisonCount();
-
-        int searchValue = dataset[9];
-        System.out.println("Testing contains with " + datasetType  + " [size: " + N + "]" + " [value: " + searchValue + "]");
+        System.out.println("Searching for [value: " + searchValue + "]");
 
         for (int i = 0; i < 2; i++) {
             splayTree.contains(searchValue);
@@ -71,14 +74,14 @@ public class DataStructureComparison {
             dataset[i] = random.nextInt(bound);
         }
         randomDataset = dataset;
-        System.out.println(Arrays.toString(randomDataset));
+        //System.out.println(Arrays.toString(randomDataset));
         return dataset;
     }
 
     private static int[] generateSortedDataset() {
         sortedDataset = Arrays.copyOf(randomDataset, randomDataset.length);
         Arrays.sort(sortedDataset);
-        System.out.println(Arrays.toString(sortedDataset));
+        //System.out.println(Arrays.toString(sortedDataset));
         return sortedDataset;
     }
 
@@ -93,7 +96,7 @@ public class DataStructureComparison {
         for (int i = 0; i < array.length; i++) {
             reversedArray[i] = array[array.length - 1 - i];
         }
-        System.out.println(Arrays.toString(reversedArray));
+        //System.out.println(Arrays.toString(reversedArray));
         return reversedArray;
     }
 }
