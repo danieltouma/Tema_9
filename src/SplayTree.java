@@ -58,6 +58,7 @@ public class SplayTree<AnyType extends Comparable<? super AnyType>>
 
             if( compareResult < 0 )
             {
+                rotationCount++;
                 newNode.left = root.left;
                 newNode.right = root;
                 root.left = nullNode;
@@ -66,6 +67,7 @@ public class SplayTree<AnyType extends Comparable<? super AnyType>>
             else
             if( compareResult > 0 )
             {
+                rotationCount++;
                 newNode.right = root.right;
                 newNode.left = root;
                 root.right = nullNode;
